@@ -1,0 +1,42 @@
+---
+import { Image } from "astro:assets";
+import heroImg from "../images/hero.jpg";
+---
+
+<section class="relative">
+  <div
+    class="relative h-fit after:content-[''] after:w-full after:h-full after:absolute after:inset-0 after:z-10 after:bg-dark/60"
+  >
+    <Image
+      src={heroImg}
+      class="object-cover"
+      width={heroImg.width}
+      alt="Hero Image"
+      fetchpriority="high"
+    />
+  </div>
+  <div class="absolute top-0 z-20 w-full h-full text-white-smoke">
+    <div
+      class="container max-w-desktop h-full flex flex-col justify-center items-center"
+    >
+      <h1 class="font-bold text-3xl leading-heading mb-16 text-center">
+        Hello, I’m <span class="text-bittersweet">Olexiy Melnychuk</span>,<br
+        />Your
+        <span class="text-bittersweet">Passionate</span> Front-end Developer<span
+          class="text-bittersweet">.</span
+        >
+      </h1>
+      <p class="text-xl leading-none mb-16">
+        Help creating intuitive and dynamic user experiences for the web.
+      </p>
+      <a
+        href="/frontend-olexiy-melnychuk-cv.pdf"
+        class="uppercase inline-block rounded-main font-bold py-4 px-12 bg-bittersweet text-white-smoke text-center leading-7"
+        download
+        aria-label="Olexiy Melnychuk CV"
+      >
+        Download CV</a
+      >
+    </div>
+  </div>
+</section>
