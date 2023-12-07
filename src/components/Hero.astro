@@ -1,21 +1,10 @@
 ---
 import { Image } from "astro:assets";
-import heroImg from "../images/hero.jpg";
+import HeroImage from "../images/hero.jpg";
 ---
 
-<section class="relative">
-  <div
-    class="relative h-fit after:content-[''] after:w-full after:h-full after:absolute after:inset-0 after:z-10 after:bg-dark/60"
-  >
-    <Image
-      src={heroImg}
-      class="object-cover"
-      width={heroImg.width}
-      alt="Hero Image"
-      fetchpriority="high"
-    />
-  </div>
-  <div class="absolute top-0 z-20 w-full h-full text-white-smoke">
+<section class="relative h-[631px] flex justify-normal">
+  <div class="absolute top-0 left-0 z-20 w-full h-full text-white-smoke">
     <div
       class="container max-w-desktop h-full flex flex-col justify-center items-center"
     >
@@ -38,5 +27,17 @@ import heroImg from "../images/hero.jpg";
         Download CV</a
       >
     </div>
+  </div>
+  <div
+    class="relative h-full w-full after:content-[''] after:w-full after:h-full after:absolute after:inset-0 after:z-10 after:bg-dark/60"
+  >
+    <Image
+      src={HeroImage}
+      class="bg-center object-cover min-h-full bg-dark"
+      sizes=`(min-width: 769px) 100vw, (max-width: 768px)  40vw`
+      quality={75}
+      alt="Hero"
+      fetchpriority="high"
+    />
   </div>
 </section>
