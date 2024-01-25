@@ -1,0 +1,58 @@
+---
+import type { ImageMetadata } from "astro";
+import { Image } from "astro:assets";
+
+export interface ProjectCardProps {
+  id?: number;
+  image: string;
+  title: string;
+  tags: string[];
+  description: string;
+  demo: string;
+  github: string;
+}
+
+const { title, description, demo, github, image, tags } =
+  Astro.props as ProjectCardProps;
+const images = import.meta.glob<{ default: ImageMetadata }>(
+  "../images/projects/*.{jpeg,jpg,png,gif}",
+);
+---
+
+<div class="bg-white flex flex-col rounded shadow-main">
+  <div class="w-full">
+    <Image
+      width={345}
+      height={275}
+      quality={75}
+      fetchpriority="high"
+      format="webp"
+      alt={title}
+      src={images[image]()}
+      class="bg-center rounded-t object-cover h-full min-w-full bg-dark max-w-full"
+    />
+  </div>
+  <div class="px-4 pb-9 pt-0">
+    <h3 class="text-xl mt-[18px] font-bold text-center">{title}</h3>
+    <ul class="flex gap-x-2 my-4">
+      {
+        tags.map((tag) => (
+          <li class="bg-platinum text-sm w-16 h-7 text-black py-1 px-2 text-center rounded-full">
+            {tag}
+          </li>
+        ))
+      }
+    </ul>
+    <p>{description}</p>
+    <div class="flex justify-between font-bold text-md mt-9">
+      <a href={demo} class="bg-bittersweet text-white rounded px-4 py-1.5"
+        >Live Demo</a
+      >
+      <a
+        href={github}
+        class="bg-transparent text-black rounded underline hover:no-underline underline-offset-4 px-4 py-1.5"
+        >Github</a
+      >
+    </div>
+  </div>
+</div>

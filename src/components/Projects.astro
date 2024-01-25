@@ -1,0 +1,44 @@
+---
+import ProjectCard from "@components/ProjectCard.astro";
+import { projects } from "../data/projects.json";
+import Circle from "@components/Circle.astro";
+---
+
+<section id="projects" class="py-24 relative bg-white-smoke overflow-hidden">
+  <div class="container max-w-desktop relative z-30">
+    <h2 class="text-2xl font-bold mb-12 uppercase text-center">Projects</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+      {
+        projects?.map((project) => (
+          <ProjectCard
+            key={project.id}
+            image={project.image}
+            title={project.title}
+            description={project.description}
+            demo={project.github}
+            github={project.github}
+            tags={project.tags}
+          />
+        ))
+      }
+    </div>
+  </div>
+  <Circle
+    diameter={252}
+    className="absolute top-0 translate-y-[450px] -translate-x-1/2 right-0 z-10"
+    color="#8E7DBE"
+    opacity={0.08}
+  />
+  <Circle
+    diameter={42}
+    className="absolute top-0 translate-y-[250px] translate-x-[120px] left-0 z-10"
+    color="#F2646A"
+    opacity={0.1}
+  />
+  <Circle
+    diameter={72}
+    className="absolute bottom-0 -translate-y-[250px] translate-x-[150px] left-0 z-10"
+    color="#FC8936"
+    opacity={0.1}
+  />
+</section>

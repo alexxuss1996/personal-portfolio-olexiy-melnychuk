@@ -1,0 +1,30 @@
+---
+export interface CircleProps {
+  color: string;
+  opacity: number;
+  diameter: number;
+  className?: string;
+}
+const {
+  color = "blue",
+  opacity = 1,
+  className = "",
+  diameter = 100,
+} = Astro.props as CircleProps;
+---
+
+<svg
+  width={diameter}
+  class={className}
+  height={diameter}
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <circle
+    cx={diameter / 2}
+    cy={diameter / 2}
+    r={diameter / 2}
+    fill={color}
+    fill-opacity={opacity}
+  >
+  </circle>
+</svg>
