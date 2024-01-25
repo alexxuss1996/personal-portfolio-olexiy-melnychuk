@@ -35,12 +35,10 @@ import HeroImage from "../images/hero.jpg";
   >
     <Image
       src={HeroImage}
-      loading={"eager"}
-      format="webp"
       widths={[1920, 992, 768, 375]}
       class="bg-center object-cover h-full min-w-full bg-dark"
-      sizes=`(max-width: 1920px) 1920w, (max-width: 992px) 992w, (max-width: 768px) 768w, (max-width: 375px) 375w`
-      quality={65}
+      sizes=`(max-width: 1920px) 1920px, (max-width: 992px) 992px, (max-width: 768px) 768px, (max-width: 375px) 375px, 100vw`
+      quality={55}
       alt="Hero"
       fetchpriority="high"
     />
