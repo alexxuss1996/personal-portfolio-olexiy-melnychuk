@@ -3,24 +3,26 @@ import { Image } from "astro:assets";
 import HeroImage from "../images/hero.jpg";
 ---
 
-<section class="relative h-[631px] flex justify-normal">
+<section class="relative h-[631px] flex justify-normal" id="hero-section">
   <div class="absolute top-0 left-0 z-20 w-full h-full text-white-smoke">
     <div
       class="container max-w-desktop h-full flex flex-col justify-center items-center"
     >
-      <h1 class="font-bold text-3xl leading-heading mb-16 text-center">
-        Hello, I’m <span class="text-chestnut">Olexiy Melnychuk</span>,<br
+      <h1
+        class="font-bold xl:text-3xl md:text-2xl text-xl leading-heading mb-16 text-center"
+      >
+        Hello, I’m <span class="text-bittersweet">Olexiy Melnychuk</span>,<br
         />Your
-        <span class="text-chestnut">Passionate</span> Front-end Developer<span
-          class="text-chestnut">.</span
+        <span class="text-bittersweet">Passionate</span> Front-end Developer<span
+          class="text-bittersweet">.</span
         >
       </h1>
-      <p class="text-xl leading-none mb-16">
+      <p class="xl:text-xl md:text-md leading-none mb-16">
         Help creating intuitive and dynamic user experiences for the web.
       </p>
       <a
         href="/frontend-olexiy-melnychuk-cv.pdf"
-        class="uppercase inline-block rounded-main font-bold py-4 px-12 bg-chestnut text-white text-center leading-7"
+        class="uppercase inline-block rounded-main font-bold py-4 xl:px-12 lg:px-10 px-8 text-md transition-colors hover:text-white hover:bg-bittersweet bg-white text-red-950 text-center leading-7"
         download="/frontend-olexiy-melnychuk-cv.pdf"
         aria-label="Download CV"
       >
@@ -33,7 +35,11 @@ import HeroImage from "../images/hero.jpg";
   >
     <Image
       src={HeroImage}
-      class="bg-center object-cover min-h-full bg-dark"
+      width={1920}
+      height={631}
+      format="webp"
+      widths={[1920, 768, 375]}
+      class="bg-center object-cover h-full min-w-full bg-dark"
       sizes=`(min-width: 769px) 100vw, (max-width: 768px) 40vw`
       quality={75}
       alt="Hero"

@@ -6,10 +6,10 @@ export default {
       colors: {
         white: "#FFFFFF",
         "white-smoke": "#F5F5F5",
-        chestnut: "#A04539",
+        bittersweet: "#ED7161",
         black: "#000000",
         dark: "#13070C",
-        platinum: "D9D9D9",
+        platinum: "#D9D9D9",
         linen: "#F7ECE5",
         indigo: "#8E7DBE",
         orange: "#FC8936",
@@ -32,6 +32,8 @@ export default {
         main: "0.25rem", // 4px
       },
       screens: {
+        xxxl: "2560px",
+        xxl: "1920px",
         xl: "1440px",
         lg: "1280px",
         md: "768px",
@@ -40,7 +42,7 @@ export default {
       container: {
         center: true,
         padding: {
-          xl: 0, // 60px
+          xl: "2.25rem",
           lg: "2rem",
           md: "2rem",
           sm: "1rem",
@@ -56,6 +58,9 @@ export default {
         desktop: "1440px",
         tablet: "1280px",
         mobile: "768px",
+      },
+      boxShadow: {
+        main: "0 2px 4px 0 rgba(19, 7, 12, 0.15)",
       },
     },
   },

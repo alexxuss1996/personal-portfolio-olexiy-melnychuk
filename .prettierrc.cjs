@@ -15,8 +15,8 @@ module.exports = {
       files: ["*.astro", "*.html"],
       options: {
         parser: "astro",
-        singleQuote: false
-      }
-    }
-  ]
-}
+        singleQuote: false,
+      },
+    },
+  ],
+};
