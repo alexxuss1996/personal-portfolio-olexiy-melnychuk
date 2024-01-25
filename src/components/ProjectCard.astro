@@ -45,7 +45,9 @@ const images = import.meta.glob<{ default: ImageMetadata }>(
     </ul>
     <p>{description}</p>
     <div class="flex justify-between font-bold text-md mt-9">
-      <a href={demo} class="bg-bittersweet text-white rounded px-4 py-1.5"
+      <a
+        href={demo}
+        class="bg-bittersweet hover:bg-dark transition-colors text-white rounded px-4 py-1.5"
         >Live Demo</a
       >
       <a
