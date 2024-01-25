@@ -1,0 +1,40 @@
+{
+  "skills": [
+    {
+      "id": 1,
+      "title": "HTML",
+      "icon": "simple-icons:html5",
+      "description": "Proficient in creating the structure and content of web pages, using tags to format text, insert images, links, and other media elements."
+    },
+    {
+      "id": 2,
+      "title": "CSS",
+      "icon": "simple-icons:css3",
+      "description": "Skilled in applying styles and layouts to web content, ensuring visually appealing and responsive designs."
+    },
+    {
+      "id": 3,
+      "title": "TypeScript",
+      "icon": "simple-icons:typescript",
+      "description": "Experienced in using TypeScript to enhance JavaScript by adding static typing, enabling better code quality."
+    },
+    {
+      "id": 4,
+      "title": "React",
+      "icon": "simple-icons:react",
+      "description": "Proficient in building interactive and dynamic web applications using React, a popular JavaScript library for creating user interfaces."
+    },
+    {
+      "id": 5,
+      "title": "Redux Toolkit",
+      "icon": "simple-icons:redux",
+      "description": "Well-versed in managing application state using Redux Toolkit, simplifying state management and enabling predictable data flow."
+    },
+    {
+      "id": 6,
+      "title": "Tailwind",
+      "icon": "simple-icons:tailwindcss",
+      "description": "Proficient in using Tailwind CSS for efficient and consistent web design through a utility-first approach."
+    }
+  ]
+}

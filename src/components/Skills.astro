@@ -1,0 +1,41 @@
+---
+import SkillCard from "@components/SkillCard.astro";
+import { skills } from "../data/skills.json";
+import Circle from "@components/Circle.astro";
+---
+
+<section id="skills" class="py-24 relative bg-bittersweet overflow-hidden">
+  <div class="container max-w-desktop relative z-30">
+    <h2 class="text-2xl font-bold mb-12 uppercase text-center">Skills</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+      {
+        skills?.map(({ id, title, icon, description }) => (
+          <SkillCard
+            key={id}
+            icon={icon}
+            title={title}
+            description={description}
+          />
+        ))
+      }
+    </div>
+  </div>
+  <Circle
+    diameter={252}
+    className="absolute top-0 translate-y-[450px] -translate-x-1/2 right-0 z-10"
+    color="#F5F5F5"
+    opacity={0.09}
+  />
+  <Circle
+    diameter={42}
+    className="absolute top-0 translate-y-[200px] translate-x-[120px] left-0 z-10"
+    color="#FC8936"
+    opacity={0.1}
+  />
+  <Circle
+    diameter={72}
+    className="absolute bottom-0 -translate-y-[250px] translate-x-[150px] left-0 z-10"
+    color="#FC8936"
+    opacity={0.1}
+  />
+</section>

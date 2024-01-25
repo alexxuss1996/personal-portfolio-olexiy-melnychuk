@@ -6,7 +6,7 @@ export default {
       colors: {
         white: "#FFFFFF",
         "white-smoke": "#F5F5F5",
-        bittersweet: "#E7241B",
+        bittersweet: "#ED7161",
         black: "#000000",
         dark: "#13070C",
         platinum: "#D9D9D9",

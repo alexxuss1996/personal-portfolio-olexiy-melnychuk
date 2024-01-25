@@ -9,17 +9,19 @@ import Circle from "@components/Circle.astro";
     <h2 class="text-2xl font-bold mb-12 uppercase text-center">Projects</h2>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
       {
-        projects?.map((project) => (
-          <ProjectCard
-            key={project.id}
-            image={project.image}
-            title={project.title}
-            description={project.description}
-            demo={project.github}
-            github={project.github}
-            tags={project.tags}
-          />
-        ))
+        projects?.map(
+          ({ id, image, title, description, tags, demo, github }) => (
+            <ProjectCard
+              key={id}
+              image={image}
+              title={title}
+              description={description}
+              demo={github}
+              github={github}
+              tags={tags}
+            />
+          ),
+        )
       }
     </div>
   </div>
