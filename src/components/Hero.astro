@@ -31,17 +31,16 @@ import HeroImage from "../images/hero.jpg";
     </div>
   </div>
   <div
-    class="relative h-full w-full after:content-[''] after:w-full after:h-full after:absolute after:inset-0 after:z-10 after:bg-dark/60"
+    class="relative h-full w-full after:content-[''] after:w-full after:h-full after:absolute after:inset-0 after:z-10 after:bg-dark/70"
   >
     <Image
       src={HeroImage}
-      width={1920}
-      height={631}
+      loading={"eager"}
       format="webp"
-      widths={[1920, 768, 375]}
+      widths={[1920, 992, 768, 375]}
       class="bg-center object-cover h-full min-w-full bg-dark"
-      sizes=`(min-width: 769px) 100vw, (max-width: 768px) 40vw`
-      quality={75}
+      sizes=`(max-width: 1920px) 1920w, (max-width: 992px) 992w, (max-width: 768px) 768w, (max-width: 375px) 375w`
+      quality={65}
       alt="Hero"
       fetchpriority="high"
     />
