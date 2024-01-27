@@ -1,5 +1,5 @@
 ---
-import Icon from "astro-icon";
+import { Icon } from "astro-icon/components";
 
 export interface SkillCardProps {
   id?: number;
@@ -12,7 +12,7 @@ const { title, description, icon } = Astro.props as SkillCardProps;
 ---
 
 <div class="bg-white items-center flex flex-col px-8 py-7 rounded">
-  <Icon name={icon} width="64" height="64" />
+  <Icon name={icon} width={64} height={64} />
   <h3 class="text-lg mt-8 mb-4 font-bold text-center">{title}</h3>
   <p class="text-center font-normal text-lg">{description}</p>
 </div>

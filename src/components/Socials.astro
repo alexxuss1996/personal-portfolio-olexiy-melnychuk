@@ -1,0 +1,30 @@
+---
+import { Icon } from "astro-icon/components";
+import { socials } from "../data/socials.json";
+interface Social {
+  id?: number;
+  icon: string;
+  text: string;
+  url: string;
+}
+---
+
+<ul
+  class="grid md:grid-cols-2 gap-y-5 grid-flow-row grid-cols-1 mt-24 text-black"
+>
+  {
+    socials.map((social: Social) => (
+      <li>
+        <a
+          href={social.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex gap-x-7 items-center text-dark hover:text-bittersweet transition-colors text-lg"
+        >
+          <Icon name={social.icon} width={36} height={36} />
+          {social.text}
+        </a>
+      </li>
+    ))
+  }
+</ul>

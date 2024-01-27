@@ -1,0 +1,40 @@
+{
+  "socials": [
+    {
+      "id": 1,
+      "icon": "fa:phone",
+      "text": "+380977685126",
+      "url": "tel:+380977685126"
+    },
+    {
+      "id": 2,
+      "icon": "fa:linkedin",
+      "text": "linkedin.com/in/alexmelnych",
+      "url": "https://www.linkedin.com/in/alexmelnych"
+    },
+    {
+      "id": 3,
+      "icon": "fa:telegram",
+      "text": "@melnychukk",
+      "url": "https://t.me/melnychukk"
+    },
+    {
+      "id": 4,
+      "icon": "fa:envelope",
+      "text": "alexeymelnych132@gmail.com",
+      "url": "mailto:alexeymelnych132@gmail.com"
+    },
+    {
+      "id": 5,
+      "icon": "fa:twitter",
+      "text": "twitter.com/alexxuzzz",
+      "url": "https://twitter.com/alexxuzzz"
+    },
+    {
+      "id": 6,
+      "icon": "fa:github",
+      "text": "github.com/alexxuss1996",
+      "url": "https://github.com/alexxuss1996"
+    }
+  ]
+}
