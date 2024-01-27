@@ -1,6 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 export default {
   content: ["./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}"],
+  darkMode: "class",
   theme: {
     extend: {
       colors: {
@@ -58,6 +59,7 @@ export default {
         desktop: "1440px",
         tablet: "1280px",
         mobile: "768px",
+        "offset-x-1": "calc(100% - 2.25rem)",
       },
       boxShadow: {
         main: "0 2px 4px 0 rgba(19, 7, 12, 0.15)",
