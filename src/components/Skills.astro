@@ -4,9 +4,14 @@ import { skills } from "../data/skills.json";
 import Circle from "@components/Circle.astro";
 ---
 
-<section id="skills" class="py-24 relative bg-bittersweet overflow-hidden">
+<section
+  id="skills"
+  class="py-24 relative bg-bittersweet dark:bg-indigo overflow-hidden"
+>
   <div class="container max-w-desktop relative z-30">
-    <h2 class="text-2xl font-bold mb-12 uppercase text-center">Skills</h2>
+    <h2 class="text-2xl font-bold mb-12 dark:text-white uppercase text-center">
+      Skills
+    </h2>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
       {
         skills?.map(({ id, title, icon, description }) => (

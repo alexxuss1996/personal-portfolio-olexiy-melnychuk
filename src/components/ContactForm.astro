@@ -2,39 +2,46 @@
 
 ---
 
-<form action="" class="w-full flex flex-col gap-6">
+<form action="" id="contact-form" class="w-full flex flex-col gap-6">
   <div class="w-full flex flex-col md:flex-row gap-5">
     <input
       type="text"
       name="name"
       placeholder="First name..."
-      class="h-16 w-full px-8 border-transparent bg-white rounded"
+      class="h-16 w-full px-8 border-transparent invalid:outline-red-500 autofill:text-orange dark:text-white bg-white rounded dark:bg-dark dark:placeholder:text-white-smoke"
+      required
+      autocomplete="off"
     />
     <input
       type="text"
       name="surname"
       placeholder="Last name..."
-      class="h-16 w-full px-8 border-transparent bg-white rounded"
+      class="h-16 w-full px-8 border-transparent invalid:outline-red-500 autofill:text-orange dark:text-white bg-white rounded dark:bg-dark dark:placeholder:text-white-smoke"
+      autocomplete="off"
     />
   </div>
   <input
     type="tel"
     name="phone"
     placeholder="Phone number..."
-    class="h-16 w-full px-8 border-transparent bg-white rounded"
+    class="h-16 w-full px-8 border-transparent invalid:outline-red-500 autofill:text-orange dark:text-white bg-white rounded dark:bg-dark dark:placeholder:text-white-smoke"
+    autocomplete="off"
   />
   <input
     type="email"
     name="email"
     placeholder="Email..."
-    class="h-16 w-full px-8 border-transparent bg-white rounded"
+    class="h-16 w-full px-8 border-transparent invalid:outline-red-500 autofill:text-orange dark:text-white bg-white rounded dark:bg-dark dark:placeholder:text-white-smoke"
+    required
+    autocomplete="off"
   />
 
   <textarea
     name="message"
     placeholder="Message..."
-    class="h-96 w-full px-8 pt-4 border-transparent bg-white rounded resize-y"
-  ></textarea>
+    class="h-96 w-full px-8 pt-4 border-transparent invalid:outline-red-500 autofill:text-orange dark:text-white bg-white rounded resize-y dark:bg-dark dark:placeholder:text-white-smoke"
+    required
+    autocomplete="off"></textarea>
 
   <div class="inline-flex gap-5 justify-start">
     <button
