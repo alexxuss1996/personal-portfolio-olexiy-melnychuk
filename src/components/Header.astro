@@ -1,6 +1,5 @@
 ---
 import Logo from "@components/Logo.astro";
-import Navbar from "@components/Navbar.astro";
 import ThemeButton from "@components/ThemeButton.astro";
 ---
 
@@ -9,7 +8,100 @@ import ThemeButton from "@components/ThemeButton.astro";
 >
   <div class="container max-w-desktop flex justify-between items-center">
     <Logo color="black" />
-    <Navbar />
-    <ThemeButton />
+    <nav class="px-4 lg:px-8 font-bold hidden md:block">
+      <ul
+        class="md:flex md:justify-normal transition-opacity md:opacity-100 opacity-0 text-center bg-white-smoke dark:bg-dark absolute md:w-auto w-full md:h-auto top-full left-0 right-0 md:static gap-5 md:gap-12 lg:gap-20"
+      >
+        <li class="py-4 md:p-0">
+          <a
+            href="#home"
+            class="transition-colors w-2/3 md:w-auto inline-block hover:text-orange"
+            >Home</a
+          >
+        </li>
+        <li class="py-4 md:p-0">
+          <a
+            href="#projects"
+            class="transition-colors w-2/3 md:w-auto inline-block hover:text-orange"
+            >Projects</a
+          >
+        </li>
+        <li class="py-4 md:p-0">
+          <a
+            href="#skills"
+            class="transition-colors w-2/3 md:w-auto inline-block hover:text-orange"
+            >Skills</a
+          >
+        </li>
+        <li class="py-4 md:p-0">
+          <a
+            href="#contact"
+            class="transition-colors w-2/3 md:w-auto inline-block hover:text-orange"
+            >Contact</a
+          >
+        </li>
+      </ul>
+    </nav>
+    <div class="flex items-center gap-5">
+      <ThemeButton />
+      <button
+        id="hamburger"
+        class="md:hidden flex flex-col gap-1.5 relative z-50"
+        aria-label="Open Menu"
+      >
+        <span
+          class="relative transition-transform block w-6 h-0.5 bg-black dark:bg-white-smoke"
+        ></span>
+        <span
+          class="relative transition-transform block w-6 h-0.5 bg-black dark:bg-white-smoke"
+        ></span>
+        <span
+          class="relative transition-transform block w-6 h-0.5 bg-black dark:bg-white-smoke"
+        ></span>
+      </button>
+    </div>
   </div>
 </header>
+
+<script is:inline>
+  document.addEventListener("DOMContentLoaded", () => {
+    const links = document.querySelectorAll("nav a");
+
+    links.forEach((link) => {
+      link.addEventListener("click", smoothScroll);
+    });
+
+    function smoothScroll(e) {
+      e.preventDefault();
+
+      const targetId = e.target.getAttribute("href")?.substring(1);
+      const targetElement = document.getElementById(targetId);
+
+      if (targetElement) {
+        window.scrollTo({
+          top:
+            targetElement.offsetTop -
+            document.querySelector("nav").offsetHeight,
+          behavior: "smooth",
+        });
+      }
+    }
+    document.getElementById("hamburger").addEventListener("click", (e) => {
+      document.querySelector("nav").classList.toggle("hidden");
+      e.currentTarget.classList.toggle("active");
+      document.querySelector("ul").classList.toggle("opacity-0");
+    });
+  });
+</script>
+
+<style>
+  #hamburger.active span:nth-child(1) {
+    @apply rotate-45 translate-x-[-5px] translate-y-[5px];
+  }
+  #hamburger.active span:nth-child(2) {
+    @apply scale-0;
+  }
+  #hamburger.active span:nth-child(3) {
+    @apply -rotate-45 translate-y-[-11px] translate-x-[-6px];
+  }
+</style>
