@@ -38,7 +38,7 @@ export default {
         xl: "1440px",
         lg: "1280px",
         md: "768px",
-        sm: "480px",
+        sm: "320px",
       },
       container: {
         center: true,
@@ -46,7 +46,8 @@ export default {
           xl: "2.25rem",
           lg: "2rem",
           md: "2rem",
-          sm: "1rem",
+          sm: "1.5rem",
+          DEFAULT: "1rem",
         },
       },
       transitionDuration: {
