@@ -15,6 +15,7 @@
     "@astrojs/check": "^0.3.1",
     "@astrojs/netlify": "^3.1.1",
     "@astrojs/tailwind": "^5.0.3",
+    "@sendgrid/mail": "^8.1.0",
     "astro": "^4.2.4",
     "astro-google-fonts-optimizer": "^0.2.2",
     "astro-icon": "^1.0.3",
