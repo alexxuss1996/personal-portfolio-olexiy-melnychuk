@@ -2,14 +2,24 @@
 import { Icon } from "astro-icon/components";
 ---
 
-<button id="theme-toggle" class="relative z-50" aria-label="Toggle theme">
-  <Icon width={24} height={24} name="ph:moon-bold" class="dark:hidden" />
-  <Icon width={24} height={24} name="ph:sun-bold" class="hidden dark:block" />
+<button
+  id="theme-toggle"
+  type="button"
+  class="flex h-9 w-9 items-center justify-center rounded-full bg-panel-raised text-muted transition-colors hover:text-ink"
+  aria-label="Toggle theme"
+>
+  <Icon
+    name="ph:sun-bold"
+    width={18}
+    height={18}
+    class="hidden dark:block"
+  />
+  <Icon name="ph:moon-bold" width={18} height={18} class="dark:hidden" />
 </button>
 
 <script is:inline>
   const theme = (() => {
-    if (localStorage.getItem("theme") && typeof localStorage !== "undefined") {
+    if (typeof localStorage !== "undefined" && localStorage.getItem("theme")) {
       return localStorage.getItem("theme");
     }
     if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
