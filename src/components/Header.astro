@@ -1,44 +1,41 @@
 ---
 import ThemeButton from "@components/ThemeButton.astro";
+import Logo from "@components/Logo.astro";
 import { Icon } from "astro-icon/components";
 ---
 
 <header class="fixed inset-x-0 top-0 z-50 px-4 pt-4 sm:px-6 lg:px-8">
-  <div
-    class="mx-auto flex h-16 max-w-page items-center justify-between rounded-full border border-line bg-glass px-4 shadow-[0_8px_30px_rgb(0_0_0/0.35)] backdrop-blur-2xl sm:px-6"
-  >
+  <div class="mx-auto flex h-16 max-w-page items-center justify-between rounded-full border border-line bg-glass px-4 shadow-[0_8px_30px_rgb(0_0_0/0.35)] backdrop-blur-2xl sm:px-6">
     <a
       href="#hero"
       class="flex items-center gap-3"
       aria-label="Olexiy Melnychuk — home"
     >
-      <span
-        class="flex h-9 w-9 items-center justify-center rounded-full bg-panel-raised font-display text-sm font-semibold text-accent"
-        >OM</span
-      >
-      <span
-        class="hidden font-display text-lg font-semibold tracking-tight sm:inline"
-        >Olexiy Melnychuk</span
-      >
+      <Logo size={30} />
     </a>
 
     <nav class="hidden items-center gap-6 md:flex" aria-label="Main">
-      <a href="#hero" class="font-display text-sm text-accent">Overview</a>
+      <a href="#hero" class="font-display text-sm text-accent">
+        Overview
+      </a>
       <a
         href="#projects"
         class="font-display text-sm text-muted transition-colors hover:text-ink"
-        >Projects</a
       >
+        Projects
+      </a>
       <a
         href="#skills"
         class="font-display text-sm text-muted transition-colors hover:text-ink"
-        >Stack</a
       >
+        Stack
+      </a>
       <a
         href="#contact"
         class="font-display text-sm text-muted transition-colors hover:text-ink"
-        >Contact</a
       >
+        Contact
+      </a>
     </nav>
 
     <div class="flex items-center gap-2">
@@ -68,30 +65,37 @@ import { Icon } from "astro-icon/components";
     class="mx-auto mt-2 hidden max-w-page rounded-2xl border border-line bg-glass p-2 backdrop-blur-2xl md:hidden"
     aria-label="Mobile"
   >
-    <a href="#hero" class="block rounded-xl px-4 py-3 font-display text-sm text-accent"
-      >Overview</a
+    <a
+      href="#hero"
+      class="block rounded-xl px-4 py-3 font-display text-sm text-accent"
     >
+      Overview
+    </a>
     <a
       href="#projects"
       class="block rounded-xl px-4 py-3 font-display text-sm text-muted hover:bg-panel-raised hover:text-ink"
-      >Projects</a
     >
+      Projects
+    </a>
     <a
       href="#skills"
       class="block rounded-xl px-4 py-3 font-display text-sm text-muted hover:bg-panel-raised hover:text-ink"
-      >Stack</a
     >
+      Stack
+    </a>
     <a
       href="#contact"
       class="block rounded-xl px-4 py-3 font-display text-sm text-muted hover:bg-panel-raised hover:text-ink"
-      >Contact</a
     >
+      Contact
+    </a>
     <a
       href="/frontend-olexiy-melnychuk-cv.pdf"
       download
       class="mt-1 block rounded-xl bg-accent-fill px-4 py-3 text-center font-display text-sm font-semibold text-white"
-      >Download CV</a
     >
+      Download CV
+    </a>
   </nav>
 </header>
 
