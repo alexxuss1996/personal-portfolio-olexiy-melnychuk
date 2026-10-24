@@ -160,6 +160,11 @@
     drop-shadow(0 0 12px var(--accent-glow));
 }
 
+.rpg-cursor.is-text {
+  --cursor-scale: 1;
+  margin: -14px 0 0 -14px;
+}
+
 .rpg-cursor.is-down {
   --cursor-scale: 0.94;
 }
@@ -173,11 +178,21 @@
 }
 
 .rpg-cursor-hand,
+.rpg-cursor-text,
 .rpg-cursor.is-link .rpg-cursor-arrow {
   display: none;
 }
 
 .rpg-cursor.is-link .rpg-cursor-hand {
+  display: block;
+}
+
+.rpg-cursor.is-text .rpg-cursor-arrow,
+.rpg-cursor.is-text .rpg-cursor-hand {
+  display: none;
+}
+
+.rpg-cursor.is-text .rpg-cursor-text {
   display: block;
 }
 
