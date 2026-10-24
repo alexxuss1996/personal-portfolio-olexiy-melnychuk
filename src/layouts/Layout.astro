@@ -22,16 +22,161 @@ const { title } = Astro.props;
     <title>{title}</title>
   </head>
   <body class="bg-canvas font-body text-ink antialiased">
-    <div
-      class="pointer-events-none fixed inset-0 z-0 bg-[radial-gradient(#dec0bb_1px,transparent_1px)] [background-size:28px_28px] opacity-[0.03]"
-    >
-    </div>
-    <div
-      class="pointer-events-none fixed inset-0 z-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_-20%,rgb(139_92_246/0.14),transparent)]"
-    >
+    <div class="pointer-events-none fixed inset-0 z-0 bg-[radial-gradient(#dec0bb_1px,transparent_1px)] [background-size:28px_28px] opacity-[0.03]"></div>
+    <div class="pointer-events-none fixed inset-0 z-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_-20%,rgb(139_92_246/0.14),transparent)]"></div>
+    <div id="cursor-glow" class="cursor-glow" aria-hidden="true"></div>
+    <div id="rpg-cursor" class="rpg-cursor" aria-hidden="true">
+      <svg class="rpg-cursor-arrow" viewBox="0 0 24 24">
+        <defs>
+          <linearGradient id="rpg-cursor-fill" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#c4b5fd"></stop>
+            <stop offset="0.45" stop-color="#8b5cf6"></stop>
+            <stop offset="1" stop-color="#5b21b6"></stop>
+          </linearGradient>
+        </defs>
+        <path
+          d="M1.5 1.5 L1.5 21.6 L6.7 16.8 L9.8 23.7 L13.2 22 L10 15.4 L16.6 15.1 Z"
+          fill="url(#rpg-cursor-fill)"
+          stroke="#140d1c"
+          stroke-width="1.6"
+          stroke-linejoin="round"></path>
+        <path
+          d="M3.4 4.3 L3.4 17.6 L7 14.4"
+          fill="none"
+          stroke="#e9d5ff"
+          stroke-width="0.9"
+          stroke-linecap="round"
+          opacity="0.6"></path>
+      </svg>
+      <svg class="rpg-cursor-hand" viewBox="0 0 24 24">
+        <defs>
+          <linearGradient
+            id="rpg-cursor-hand-fill"
+            x1="0"
+            y1="0"
+            x2="1"
+            y2="1"
+          >
+            <stop offset="0" stop-color="#c4b5fd"></stop>
+            <stop offset="0.45" stop-color="#8b5cf6"></stop>
+            <stop offset="1" stop-color="#5b21b6"></stop>
+          </linearGradient>
+        </defs>
+        <g transform="translate(-11.66 -0.39) scale(0.118) rotate(-30 111.5 16)">
+          <path
+            d="M224 104v50.93c0 46.2-36.85 84.55-83 85.06a83.7 83.7 0 0 1-60.4-24.59C58.79 192.33 34.15 136 34.15 136a16 16 0 0 1 6.53-22.23c7.66-4 17.1-.84 21.4 6.62l21 36.44a6.09 6.09 0 0 0 6 3.09h.12a8.19 8.19 0 0 0 6.8-8.18V32a16 16 0 0 1 16.77-16c8.61.4 15.23 7.82 15.23 16.43V104a8 8 0 0 0 8.53 8a8.17 8.17 0 0 0 7.47-8.25V88a16 16 0 0 1 16.77-16c8.61.4 15.23 7.82 15.23 16.43V112a8 8 0 0 0 8.53 8a8.17 8.17 0 0 0 7.47-8.25v-7.28c0-8.61 6.62-16 15.23-16.43A16 16 0 0 1 224 104"
+            fill="url(#rpg-cursor-hand-fill)"
+            stroke="#140d1c"
+            stroke-width="12"
+            stroke-linejoin="round"></path>
+          <path
+            d="M110 40 V110"
+            fill="none"
+            stroke="#e9d5ff"
+            stroke-width="7"
+            stroke-linecap="round"
+            opacity="0.55"></path>
+        </g>
+      </svg>
     </div>
     <div class="relative z-10">
       <slot />
     </div>
+
+    <script>
+      const glow = document.getElementById("cursor-glow");
+      const reduceMotion = window.matchMedia(
+        "(prefers-reduced-motion: reduce)",
+      ).matches;
+      const canHover = window.matchMedia(
+        "(hover: hover) and (pointer: fine)",
+      ).matches;
+
+      if (glow && canHover && !reduceMotion) {
+        window.addEventListener(
+          "pointermove",
+          (event) => {
+            glow.style.transform = `translate3d(${event.clientX}px, ${event.clientY}px, 0)`;
+            glow.classList.add("is-active");
+          },
+          { passive: true },
+        );
+      }
+
+      const cursor = document.getElementById("rpg-cursor");
+
+      if (cursor && canHover && !reduceMotion) {
+        document.documentElement.classList.add("custom-cursor");
+
+        window.addEventListener(
+          "pointermove",
+          (event) => {
+            cursor.style.transform = `translate3d(${event.clientX}px, ${event.clientY}px, 0) scale(var(--cursor-scale, 1))`;
+            cursor.classList.add("is-active");
+          },
+          { passive: true },
+        );
+
+        document.addEventListener("pointerover", (event) => {
+          if (!(event.target instanceof Element)) return;
+          cursor.classList.toggle(
+            "is-hover",
+            Boolean(
+              event.target.closest(
+                "a, button, [role='button'], summary, label, input, textarea, select",
+              ),
+            ),
+          );
+          cursor.classList.toggle(
+            "is-link",
+            Boolean(event.target.closest("a")),
+          );
+        });
+
+        document.addEventListener("pointerdown", () =>
+          cursor.classList.add("is-down"),
+        );
+        document.addEventListener("pointerup", () =>
+          cursor.classList.remove("is-down"),
+        );
+        document.addEventListener("mouseleave", () =>
+          cursor.classList.remove("is-active"),
+        );
+      }
+
+      const sections = document.querySelectorAll(
+        "main > section:not(:first-of-type)",
+      );
+
+      if (
+        sections.length &&
+        "IntersectionObserver" in window &&
+        !reduceMotion
+      ) {
+        const observer = new IntersectionObserver(
+          (entries) => {
+            for (const entry of entries) {
+              if (!entry.isIntersecting) continue;
+
+              entry.target.animate(
+                [
+                  { opacity: 0, transform: "translateY(18px)" },
+                  { opacity: 1, transform: "none" },
+                ],
+                {
+                  duration: 650,
+                  easing: "cubic-bezier(0.22, 0.61, 0.36, 1)",
+                  fill: "both",
+                },
+              );
+              observer.unobserve(entry.target);
+            }
+          },
+          { threshold: 0.12, rootMargin: "0px 0px -40px 0px" },
+        );
+
+        sections.forEach((section) => observer.observe(section));
+      }
+    </script>
   </body>
 </html>
