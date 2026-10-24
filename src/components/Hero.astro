@@ -1,51 +1,50 @@
 ---
-import { Image } from "astro:assets";
-import HeroImage from "../images/hero.jpg";
+import { Icon } from "astro-icon/components";
 ---
 
 <section
-  class="relative h-[631px] overflow-hidden flex justify-normal"
-  id="home"
+  id="hero"
+  class="relative overflow-hidden px-4 pb-24 pt-12 text-center sm:px-6 md:pb-32 md:pt-20 lg:px-8"
 >
-  <div class="absolute top-0 left-0 z-20 w-full h-full text-white-smoke">
-    <div
-      class="container max-w-desktop h-full flex flex-col text-center justify-center items-center"
-    >
-      <h1
-        class="font-bold xl:text-3xl lg:text-[56px] md:text-2xl text-xl leading-heading mb-16 text-center"
-      >
-        Hello, I’m <span class="text-bittersweet">Olexiy Melnychuk</span>,<br
-        />Your
-        <span class="text-bittersweet">Passionate</span> Front-end Developer<span
-          class="text-bittersweet">.</span
-        >
-      </h1>
-      <p class="xl:text-xl md:text-md leading-relaxed mb-16">
-        Help creating intuitive and dynamic user experiences for the web.
-      </p>
-      <a
-        href="/frontend-olexiy-melnychuk-cv.pdf"
-        class="uppercase inline-block dark:bg-transparent dark:hover:bg-white-smoke dark:border-white-smoke dark:hover:text-dark dark:text-white-smoke border-2 border-transparent rounded-main font-bold py-4 xl:px-12 lg:px-10 px-8 text-md transition-colors hover:text-white hover:bg-bittersweet bg-white text-dark leading-7"
-        download="/frontend-olexiy-melnychuk-cv.pdf"
-        aria-label="Download CV"
-      >
-        Download CV</a
-      >
-    </div>
-  </div>
   <div
-    class="relative h-full w-full after:content-[''] after:w-full after:h-full after:absolute after:inset-0 after:z-10 after:bg-dark/70"
+    class="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-[340px] w-[600px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-gradient-to-tr from-accent/20 via-accent/10 to-transparent blur-[110px]"
   >
-    <Image
-      src={HeroImage}
-      width={HeroImage.width / 1.5}
-      height={HeroImage.height / 1.5}
-      widths={[1280, 768, 375]}
-      class="bg-center object-cover h-full min-w-full bg-dark"
-      sizes=`(max-width: 1920px) 100vw, (max-width: 1280px) 1280px, (max-width: 768px) 768px, (max-width: 375px) 375px, 100vw`
-      quality={55}
-      alt="Hero"
-      fetchpriority="high"
-    />
+  </div>
+
+  <div class="mx-auto max-w-4xl space-y-4">
+    <h1
+      class="font-display text-4xl font-bold leading-[1.15] tracking-[-0.02em] sm:text-5xl lg:text-[56px] lg:leading-[64px]"
+    >
+      Hello, I’m <span
+        class="bg-gradient-to-r from-accent to-accent-hover bg-clip-text text-transparent"
+        >Olexiy Melnychuk</span
+      >,<br />
+      Your <span
+        class="underline decoration-accent decoration-wavy underline-offset-8"
+        >Passionate</span
+      > Web Developer.
+    </h1>
+    <p
+      class="mx-auto max-w-2xl pt-2 text-base leading-7 text-muted sm:text-lg sm:leading-8"
+    >
+      Crafting intuitive, accessible, and high-performance digital interfaces
+      with modern component architecture and dynamic web animations.
+    </p>
+  </div>
+
+  <div class="mt-10 flex flex-wrap items-center justify-center gap-4">
+    <a
+      href="#projects"
+      class="inline-flex items-center gap-2 rounded-full border border-accent/40 bg-accent px-8 py-3.5 font-display text-lg font-semibold text-white transition hover:bg-accent-hover hover:shadow-[0_0_28px_var(--accent-glow)]"
+    >
+      View Projects <Icon name="ph:arrow-right-bold" width={20} height={20} />
+    </a>
+    <a
+      href="/frontend-olexiy-melnychuk-cv.pdf"
+      download
+      class="inline-flex items-center gap-2 rounded-full bg-panel px-7 py-3.5 font-display text-lg font-semibold text-ink ring-1 ring-line transition hover:bg-panel-raised"
+    >
+      <Icon name="ph:file-text-bold" width={20} height={20} /> Download CV
+    </a>
   </div>
 </section>
