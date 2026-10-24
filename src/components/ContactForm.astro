@@ -1,8 +1,9 @@
 ---
 import { Resend } from "resend";
 import { Icon } from "astro-icon/components";
+import { getSecret } from "astro:env/server";
 
-const resend = new Resend(import.meta.env.RESEND_API_KEY);
+const resend = new Resend(getSecret("RESEND_API_KEY"));
 
 const escapeHtml = (value: string) =>
   value.replace(
@@ -50,8 +51,8 @@ if (Astro.request.method === "POST") {
 
     if (Object.keys(errors).length === 0) {
       const { error } = await resend.emails.send({
-        to: [import.meta.env.RECIPIENT_EMAIL_ADDRESS as string],
-        from: (import.meta.env.RESEND_FROM_EMAIL as string) || "onboarding@resend.dev",
+        to: [getSecret("RECIPIENT_EMAIL_ADDRESS") as string],
+        from: getSecret("RESEND_FROM_EMAIL") || "onboarding@resend.dev",
         ...(values.email ? { replyTo: values.email } : {}),
         subject: `Message from ${values.name} ${values.surname}`.trim(),
         text: values.message,
