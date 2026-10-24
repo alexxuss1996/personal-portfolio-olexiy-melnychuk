@@ -26,15 +26,15 @@
     },
     {
       "id": 5,
-      "title": "Redux Toolkit",
-      "icon": "simple-icons:redux",
-      "description": "Well-versed in managing application state using Redux Toolkit, simplifying state management and enabling predictable data flow."
+      "title": "Nest.js",
+      "icon": "simple-icons:nestjs",
+      "description": "Experienced in building scalable enterprise-grade server-side architectures, modular dependency injection patterns, RESTful APIs, and microservices."
     },
     {
       "id": 6,
-      "title": "Tailwind",
-      "icon": "simple-icons:tailwindcss",
-      "description": "Proficient in using Tailwind CSS for efficient and consistent web design through a utility-first approach."
+      "title": "OpenCode",
+      "icon": "simple-icons:opencode",
+      "description": "Proficient in AI-native development workflows, agentic coding environments, open-source development toolchains, and collaborative code engineering."
     }
   ]
 }
