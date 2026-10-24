@@ -3,12 +3,17 @@ import ContactForm from "@components/ContactForm.astro";
 import { socials } from "../data/socials.json";
 import { Icon } from "astro-icon/components";
 
-const direct = socials.filter((social) =>
-  ["fa:phone", "fa:envelope", "fa:telegram"].includes(social.icon),
+const direct = ["fa:phone", "fa:envelope", "fa:telegram"].flatMap((icon) =>
+  socials.filter((social) => social.icon === icon),
 );
 const networks = socials.filter((social) =>
   ["fa:linkedin", "fa:github", "fa:twitter"].includes(social.icon),
 );
+
+const handle = (icon: string, url: string) => {
+  const last = url.replace(/\/$/, "").split("/").pop() ?? "";
+  return icon === "fa:twitter" ? `@${last}` : `/${last}`;
+};
 
 const labels: Record<string, string> = {
   "fa:phone": "Direct Phone",
@@ -88,7 +93,7 @@ const networkLabels: Record<string, string> = {
                     {networkLabels[item.icon]}
                   </span>
                   <span class="font-display text-[11px] text-muted group-hover:text-ink">
-                    {item.text.replace(/^https?:\/\/(www\.)?/, "")}
+                    {handle(item.icon, item.url)}
                   </span>
                 </a>
               ))
