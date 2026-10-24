@@ -431,7 +431,7 @@ import { skills } from "../data/skills.json";
   <div class="relative z-10 mx-auto w-full max-w-page px-4 sm:px-6 lg:px-8">
     <div class="mx-auto mb-16 max-w-2xl text-center">
       <h2 class="font-display text-4xl font-semibold tracking-tight">Technical Stack &amp; Mastery</h2>
-      <p class="mt-3 text-sm leading-6 text-muted">Specialized in creating robust front-end web apps with clean separation of concerns and maintainable codebases.</p>
+      <p class="mt-3 text-sm leading-6 text-muted">Specialized in creating robust web apps with clean separation of concerns and maintainable codebases.</p>
     </div>
     <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
       {skills.map(({ id, title, icon, description }, index) => (

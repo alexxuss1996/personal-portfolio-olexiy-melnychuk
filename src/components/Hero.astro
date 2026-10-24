@@ -6,33 +6,24 @@ import { Icon } from "astro-icon/components";
   id="hero"
   class="relative overflow-hidden px-4 pb-16 pt-12 text-center sm:px-6 md:pb-20 md:pt-20 lg:px-8"
 >
-  <div
-    class="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-[340px] w-[600px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-gradient-to-tr from-accent/20 via-accent/10 to-transparent blur-[110px]"
-  >
-  </div>
+  <div class="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-[340px] w-[600px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-gradient-to-tr from-accent/20 via-accent/10 to-transparent blur-[110px]"></div>
 
-  <div class="mx-auto max-w-4xl space-y-4">
+  <div class="hero-fade mx-auto max-w-4xl space-y-4">
+    <!-- prettier-ignore -->
     <h1
+      data-typewriter
       class="font-display text-4xl font-bold leading-[1.15] tracking-[-0.02em] sm:text-5xl lg:text-[56px] lg:leading-[64px]"
     >
-      Hello, I’m <span
-        class="bg-gradient-to-r from-accent to-accent-hover bg-clip-text text-transparent"
-        >Olexiy Melnychuk</span
-      >,<br />
-      Your <span
-        class="underline decoration-accent decoration-wavy underline-offset-8"
-        >Passionate</span
-      > Web Developer.
+      <span data-type-segment>Hello, I’m </span><span data-type-segment class="bg-gradient-to-r from-accent to-accent-hover bg-clip-text text-transparent">Olexiy Melnychuk</span><span data-type-segment>,</span><br />
+      <span data-type-segment>Your </span><span data-type-segment class="text-accent [text-shadow:0_0_20px_var(--accent-glow)]">Passionate</span><span data-type-segment> Web Developer.</span>
     </h1>
-    <p
-      class="mx-auto max-w-2xl pt-2 text-base leading-7 text-muted sm:text-lg sm:leading-8"
-    >
+    <p class="mx-auto max-w-2xl pt-2 text-base leading-7 text-muted sm:text-lg sm:leading-8">
       Crafting intuitive, accessible, and high-performance digital interfaces
       with modern component architecture and dynamic web animations.
     </p>
   </div>
 
-  <div class="mt-10 flex flex-wrap items-center justify-center gap-4">
+  <div class="hero-fade mt-10 flex flex-wrap items-center justify-center gap-4">
     <a
       href="#projects"
       class="inline-flex items-center gap-2 rounded-full border border-accent/40 bg-accent-fill px-8 py-3.5 font-display text-lg font-semibold text-white transition hover:bg-accent-hover hover:shadow-[0_0_28px_var(--accent-glow)]"
@@ -44,7 +35,49 @@ import { Icon } from "astro-icon/components";
       download
       class="inline-flex items-center gap-2 rounded-full bg-panel px-7 py-3.5 font-display text-lg font-semibold text-ink ring-1 ring-line transition hover:bg-panel-raised"
     >
-      <Icon name="ph:file-text-bold" width={20} height={20} /> Download CV
+      <Icon name="ph:file-arrow-down-bold" width={20} height={20} /> Download CV
     </a>
   </div>
 </section>
+
+<script is:inline>
+  (() => {
+    const title = document.querySelector("[data-typewriter]");
+    if (!title) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    const segments = Array.from(title.querySelectorAll("[data-type-segment]"));
+    if (!segments.length) return;
+
+    const parts = segments.map((el) => el.textContent);
+    const full = parts.join("").replace(/\s+/g, " ").trim();
+
+    title.style.minHeight = `${title.getBoundingClientRect().height}px`;
+    title.setAttribute("aria-label", full);
+
+    for (const el of segments) el.textContent = "";
+    title.classList.add("is-typing");
+
+    let segment = 0;
+    let index = 0;
+
+    const type = () => {
+      while (segment < parts.length && index >= parts[segment].length) {
+        segment += 1;
+        index = 0;
+      }
+
+      if (segment >= parts.length) {
+        title.classList.remove("is-typing");
+        title.style.minHeight = "";
+        return;
+      }
+
+      segments[segment].textContent += parts[segment][index];
+      index += 1;
+      window.setTimeout(type, 32);
+    };
+
+    window.setTimeout(type, 450);
+  })();
+</script>
