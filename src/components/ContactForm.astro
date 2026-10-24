@@ -1,109 +1,238 @@
 ---
-import SendGrid from "@sendgrid/mail";
+import { Resend } from "resend";
 import { Icon } from "astro-icon/components";
-SendGrid.setApiKey(import.meta.env.SENDGRID_API_KEY);
+
+const resend = new Resend(import.meta.env.RESEND_API_KEY);
+
+const escapeHtml = (value: string) =>
+  value.replace(
+    /[&<>"']/g,
+    (char) =>
+      ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[char]!,
+  );
+
+type Field = "name" | "surname" | "phone" | "email" | "message";
+
+const values: Record<Field, string> = { name: "", surname: "", phone: "", email: "", message: "" };
+const errors: Partial<Record<Field | "form", string>> = {};
+let sent = false;
 
 if (Astro.request.method === "POST") {
   try {
     const data = await Astro.request.formData();
-    const name = data.get("name");
-    const surname = data.get("surname");
-    const phone = data.get("phone");
-    const email = data.get("email");
-    const message = data.get("message");
+    for (const field of Object.keys(values) as Field[]) {
+      values[field] = String(data.get(field) ?? "").trim();
+    }
 
-    const msg = {
-      to: import.meta.env.RECIPIENT_EMAIL_ADDRESS as string,
-      from: "alexa_11111@ukr.net",
-      subject: `Message from ${name} ${surname}`,
-      text: message,
-      html: `<strong>Name: </strong>${name}<br><strong>Surname: </strong>${surname}<br><strong>Phone: </strong>${phone}<br><strong>Email: </strong>${email}<br><strong>Message: </strong>${message}`,
-    };
+    if (!values.name) errors.name = "First name is required.";
+    else if (values.name.length < 2) errors.name = "Use at least 2 characters.";
+    else if (values.name.length > 60) errors.name = "Use at most 60 characters.";
 
-    await SendGrid.send(msg as any)
-      .then(() => console.log("Message sent"))
-      .catch((error) => console.error(error));
+    if (values.surname.length > 60) errors.surname = "Use at most 60 characters.";
+
+    if (!values.email && !values.phone) errors.form = "Enter an email or a phone number.";
+    if (values.phone) {
+      if (
+        !/^[+()\d\s-]{7,20}$/.test(values.phone) ||
+        (values.phone.match(/\d/g) ?? []).length < 7
+      ) {
+        errors.phone = "Enter a valid phone number.";
+      }
+    }
+
+    if (values.email && (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.email) || values.email.length > 254)) {
+      errors.email = "Enter a valid email address.";
+    }
+
+    if (!values.message) errors.message = "Message is required.";
+    else if (values.message.length < 10) errors.message = "Use at least 10 characters.";
+    else if (values.message.length > 2000) errors.message = "Use at most 2000 characters.";
+
+    if (Object.keys(errors).length === 0) {
+      const { error } = await resend.emails.send({
+        to: [import.meta.env.RECIPIENT_EMAIL_ADDRESS as string],
+        from: (import.meta.env.RESEND_FROM_EMAIL as string) || "onboarding@resend.dev",
+        ...(values.email ? { replyTo: values.email } : {}),
+        subject: `Message from ${values.name} ${values.surname}`.trim(),
+        text: values.message,
+        html: `<strong>Name: </strong>${escapeHtml(values.name)}<br><strong>Surname: </strong>${escapeHtml(values.surname)}<br><strong>Phone: </strong>${escapeHtml(values.phone)}<br><strong>Email: </strong>${escapeHtml(values.email)}<br><strong>Message: </strong>${escapeHtml(values.message)}`,
+      });
+
+      if (error) {
+        console.error(error);
+        errors.form = "Message could not be sent. Please try again.";
+      } else {
+        sent = true;
+        for (const field of Object.keys(values) as Field[]) values[field] = "";
+      }
+      console.log(sent ? "Message sent" : "Message failed");
+    }
   } catch (error) {
     console.error(error);
+    errors.form = "Message could not be sent. Please try again.";
   }
 }
+
+const fieldClass = (field: Field) =>
+  `rounded-lg border bg-panel px-4 py-3 font-body text-sm text-ink placeholder:text-muted focus:outline-none focus:ring-2 ${
+    errors[field]
+      ? "border-red-600 focus:ring-red-500 dark:border-red-400"
+      : "border-field-line focus:ring-accent-fill"
+  }`;
 ---
 
-<form method="post" class="space-y-4">
-  <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
-    <label
-      class="flex flex-col gap-1.5 font-display text-[11px] uppercase tracking-wider text-muted"
+<form method="post" action="/#contact" class="space-y-4" data-contact-form>
+  {sent && (
+    <p
+      role="status"
+      class="rounded-lg border border-accent/40 bg-accent/10 px-4 py-3 font-body text-sm text-ink"
     >
-      First Name
+      Thanks, your message was sent. I'll get back to you soon.
+    </p>
+  )}
+  {errors.form && (
+    <p
+      role="alert"
+      class="rounded-lg border border-red-600/50 bg-red-600/10 px-4 py-3 font-body text-sm text-red-700 dark:border-red-400/50 dark:text-red-400"
+    >
+      {errors.form}
+    </p>
+  )}
+
+  <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+    <label class="flex flex-col gap-1.5 font-display text-[11px] uppercase tracking-wider text-muted">
+      <span>
+        First Name <span aria-hidden="true" class="text-red-600 dark:text-red-400">*</span>
+      </span>
       <input
         name="name"
         type="text"
         required
+        minlength="2"
+        maxlength="60"
         autocomplete="given-name"
-        placeholder="e.g. Elena"
-        class="rounded-lg border border-field-line bg-panel px-4 py-3 font-body text-sm text-ink placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-accent-fill"
+        placeholder="e.g. John"
+        value={values.name}
+        aria-invalid={errors.name ? "true" : undefined}
+        aria-describedby={errors.name ? "error-name" : undefined}
+        class={fieldClass("name")}
       />
+      {errors.name && <span id="error-name" class="normal-case text-red-700 dark:text-red-400">{errors.name}</span>}
     </label>
-    <label
-      class="flex flex-col gap-1.5 font-display text-[11px] uppercase tracking-wider text-muted"
-    >
+    <label class="flex flex-col gap-1.5 font-display text-[11px] uppercase tracking-wider text-muted">
       Last Name
       <input
         name="surname"
         type="text"
+        maxlength="60"
         autocomplete="family-name"
-        placeholder="e.g. Rostova"
-        class="rounded-lg border border-field-line bg-panel px-4 py-3 font-body text-sm text-ink placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-accent-fill"
+        placeholder="e.g. Doe"
+        value={values.surname}
+        aria-invalid={errors.surname ? "true" : undefined}
+        aria-describedby={errors.surname ? "error-surname" : undefined}
+        class={fieldClass("surname")}
       />
+      {errors.surname && (
+        <span id="error-surname" class="normal-case text-red-700 dark:text-red-400">{errors.surname}</span>
+      )}
     </label>
   </div>
 
+  <p class="font-body text-xs font-medium text-red-700 dark:text-red-400">Email or phone — at least one is required.</p>
+
   <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
-    <label
-      class="flex flex-col gap-1.5 font-display text-[11px] uppercase tracking-wider text-muted"
-    >
+    <label class="flex flex-col gap-1.5 font-display text-[11px] uppercase tracking-wider text-muted">
       Email Address
       <input
         name="email"
         type="email"
-        required
+        maxlength="254"
         autocomplete="email"
         placeholder="name@company.com"
-        class="rounded-lg border border-field-line bg-panel px-4 py-3 font-body text-sm text-ink placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-accent-fill"
+        value={values.email}
+        aria-invalid={errors.email ? "true" : undefined}
+        aria-describedby={errors.email ? "error-email" : undefined}
+        class={fieldClass("email")}
       />
+      {errors.email && (
+        <span id="error-email" class="normal-case text-red-700 dark:text-red-400">{errors.email}</span>
+      )}
     </label>
-    <label
-      class="flex flex-col gap-1.5 font-display text-[11px] uppercase tracking-wider text-muted"
-    >
+    <label class="flex flex-col gap-1.5 font-display text-[11px] uppercase tracking-wider text-muted">
       Phone Number
       <input
         name="phone"
         type="tel"
-        required
+        minlength="7"
+        maxlength="20"
+        pattern="[+()0-9\s-]{7,20}"
         autocomplete="tel"
         placeholder="+380..."
-        class="rounded-lg border border-field-line bg-panel px-4 py-3 font-body text-sm text-ink placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-accent-fill"
+        value={values.phone}
+        aria-invalid={errors.phone ? "true" : undefined}
+        aria-describedby={errors.phone ? "error-phone" : undefined}
+        class={fieldClass("phone")}
       />
+      {errors.phone && (
+        <span id="error-phone" class="normal-case text-red-700 dark:text-red-400">{errors.phone}</span>
+      )}
     </label>
   </div>
 
-  <label
-    class="flex flex-col gap-1.5 font-display text-[11px] uppercase tracking-wider text-muted"
-  >
-    Message
+  <label class="flex flex-col gap-1.5 font-display text-[11px] uppercase tracking-wider text-muted">
+    <span>
+      Message <span aria-hidden="true" class="text-red-600 dark:text-red-400">*</span>
+    </span>
     <textarea
       name="message"
       rows="4"
       required
+      minlength="10"
+      maxlength="2000"
       placeholder="Describe your project, timeline, or inquiry..."
-      class="resize-none rounded-lg border border-field-line bg-panel px-4 py-3 font-body text-sm text-ink placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-accent-fill"
-    ></textarea>
+      aria-invalid={errors.message ? "true" : undefined}
+      aria-describedby={errors.message ? "error-message" : undefined}
+      class={`resize-none ${fieldClass("message")}`}
+    >{values.message}</textarea>
+    {errors.message && (
+      <span id="error-message" class="normal-case text-red-700 dark:text-red-400">{errors.message}</span>
+    )}
   </label>
 
   <button
     type="submit"
-    class="flex w-full items-center justify-center gap-2 rounded-xl border border-accent/40 bg-accent-fill py-4 font-display text-lg font-semibold text-white transition hover:bg-accent-hover hover:shadow-[0_0_30px_var(--accent-glow)]"
+    disabled
+    class="flex w-full items-center justify-center gap-2 rounded-xl border border-accent/40 bg-accent-fill py-4 font-display text-lg font-semibold text-white transition hover:bg-accent-hover hover:shadow-[0_0_30px_var(--accent-glow)] disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-accent-fill disabled:hover:shadow-none"
   >
     Send Message <Icon name="ph:paper-plane-tilt-bold" width={20} height={20} />
   </button>
 </form>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>("[data-contact-form]");
+
+  if (form) {
+    const button = form.querySelector<HTMLButtonElement>('button[type="submit"]')!;
+    const name = form.elements.namedItem("name") as HTMLInputElement;
+    const email = form.elements.namedItem("email") as HTMLInputElement;
+    const phone = form.elements.namedItem("phone") as HTMLInputElement;
+    const message = form.elements.namedItem("message") as HTMLTextAreaElement;
+
+    const isComplete = () =>
+      name.value.trim().length >= 2 &&
+      message.value.trim().length >= 10 &&
+      Boolean(email.value.trim() || phone.value.trim());
+
+    const update = () => {
+      button.disabled = !isComplete();
+    };
+
+    form.addEventListener("input", update);
+    form.addEventListener("change", update);
+    form.addEventListener("submit", (event) => {
+      if (!isComplete()) event.preventDefault();
+    });
+
+    update();
+  }
+</script>
