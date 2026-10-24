@@ -7,14 +7,30 @@ export interface ProjectCardProps {
   id?: number;
   image: string;
   title: string;
+  badge?: string;
+  badgeTone?: "accent" | "sky" | "teal";
   tags: string[];
   description: string;
   demo: string;
   github: string;
 }
 
-const { title, description, demo, github, image, tags } =
-  Astro.props as ProjectCardProps;
+const {
+  title,
+  description,
+  demo,
+  github,
+  image,
+  tags,
+  badge,
+  badgeTone = "accent",
+} = Astro.props as ProjectCardProps;
+const badgeTones = {
+  accent: "text-accent",
+  sky: "text-sky-700 dark:text-sky-400",
+  teal: "text-teal-700 dark:text-teal-300",
+};
+const badgeLabel = badge ?? tags[0];
 const images = import.meta.glob<{ default: ImageMetadata }>(
   "../images/projects/*.{jpeg,jpg,png,gif}",
 );
@@ -38,9 +54,14 @@ const images = import.meta.glob<{ default: ImageMetadata }>(
     >
     </div>
     {
-      tags[0] && (
-        <span class="absolute right-3 top-3 rounded-full bg-canvas/80 px-2.5 py-1 font-display text-[11px] font-semibold uppercase tracking-wider text-accent backdrop-blur-md">
-          {tags[0]}
+      badgeLabel && (
+        <span
+          class:list={[
+            "absolute right-3 top-3 rounded-full bg-canvas/80 px-2.5 py-1 font-display text-[11px] font-semibold uppercase tracking-wider backdrop-blur-md",
+            badgeTones[badgeTone],
+          ]}
+        >
+          {badgeLabel}
         </span>
       )
     }

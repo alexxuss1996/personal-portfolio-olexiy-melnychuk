@@ -4,7 +4,14 @@
       "id": 1,
       "image": "../images/projects/1.png",
       "title": "Todo App",
-      "tags": ["HTML", "CSS", "JS", "React"],
+      "badge": "Featured",
+      "badgeTone": "accent",
+      "tags": [
+        "HTML",
+        "CSS",
+        "JS",
+        "React"
+      ],
       "description": "My first project featuring HTML, CSS, JS and React - simple todo app that allows to create, edit and delete todos.",
       "demo": "https://example.com/",
       "github": "https://github.com/alexxuss1996/woodtech"
@@ -13,7 +20,14 @@
       "id": 2,
       "image": "../images/projects/2.png",
       "title": "Todo App",
-      "tags": ["HTML", "CSS", "JS", "React"],
+      "badge": "New",
+      "badgeTone": "sky",
+      "tags": [
+        "HTML",
+        "CSS",
+        "JS",
+        "React"
+      ],
       "description": "My first project featuring HTML, CSS, JS and React - simple todo app that allows to create, edit and delete todos.",
       "demo": "https://example.com/",
       "github": "https://github.com/alexxuss1996/woodtech"
@@ -22,7 +36,14 @@
       "id": 3,
       "image": "../images/projects/3.png",
       "title": "Todo App",
-      "tags": ["HTML", "CSS", "JS", "React"],
+      "badge": "Open Source",
+      "badgeTone": "teal",
+      "tags": [
+        "HTML",
+        "CSS",
+        "JS",
+        "React"
+      ],
       "description": "My first project featuring HTML, CSS, JS and React - simple todo app that allows to create, edit and delete todos.",
       "demo": "https://example.com/",
       "github": "https://github.com/alexxuss1996/woodtech"
@@ -31,7 +52,14 @@
       "id": 4,
       "image": "../images/projects/4.png",
       "title": "Todo App",
-      "tags": ["HTML", "CSS", "JS", "React"],
+      "badge": "Case Study",
+      "badgeTone": "accent",
+      "tags": [
+        "HTML",
+        "CSS",
+        "JS",
+        "React"
+      ],
       "description": "My first project featuring HTML, CSS, JS and React - simple todo app that allows to create, edit and delete todos.",
       "demo": "https://example.com/",
       "github": "https://github.com/alexxuss1996/woodtech"
@@ -40,7 +68,14 @@
       "id": 5,
       "image": "../images/projects/5.png",
       "title": "Todo App",
-      "tags": ["HTML", "CSS", "JS", "React"],
+      "badge": "Live",
+      "badgeTone": "sky",
+      "tags": [
+        "HTML",
+        "CSS",
+        "JS",
+        "React"
+      ],
       "description": "My first project featuring HTML, CSS, JS and React - simple todo app that allows to create, edit and delete todos.",
       "demo": "https://example.com/",
       "github": "https://github.com/alexxuss1996/woodtech"
@@ -49,7 +84,14 @@
       "id": 6,
       "image": "../images/projects/6.png",
       "title": "Todo App",
-      "tags": ["HTML", "CSS", "JS", "React"],
+      "badge": "Prototype",
+      "badgeTone": "teal",
+      "tags": [
+        "HTML",
+        "CSS",
+        "JS",
+        "React"
+      ],
       "description": "My first project featuring HTML, CSS, JS and React - simple todo app that allows to create, edit and delete todos.",
       "demo": "https://example.com/",
       "github": "https://github.com/alexxuss1996/woodtech"
@@ -58,7 +100,14 @@
       "id": 7,
       "image": "../images/projects/7.png",
       "title": "Todo App",
-      "tags": ["HTML", "CSS", "JS", "React"],
+      "badge": "Experiment",
+      "badgeTone": "accent",
+      "tags": [
+        "HTML",
+        "CSS",
+        "JS",
+        "React"
+      ],
       "description": "My first project featuring HTML, CSS, JS and React - simple todo app that allows to create, edit and delete todos.",
       "demo": "https://example.com/",
       "github": "https://github.com/alexxuss1996/woodtech"
@@ -67,7 +116,14 @@
       "id": 8,
       "image": "../images/projects/8.png",
       "title": "Todo App",
-      "tags": ["HTML", "CSS", "JS", "React"],
+      "badge": "Playground",
+      "badgeTone": "sky",
+      "tags": [
+        "HTML",
+        "CSS",
+        "JS",
+        "React"
+      ],
       "description": "My first project featuring HTML, CSS, JS and React - simple todo app that allows to create, edit and delete todos.",
       "demo": "https://example.com/",
       "github": "https://github.com/alexxuss1996/woodtech"

@@ -98,7 +98,7 @@ Section title "Featured Projects", left-aligned. Responsive grid: 1 col mobile, 
 Card:
 
 - 16:10 cover image, hover zoom.
-- Status pill top-right using the first tag.
+- Status pill top-right using per-project `badge` + `badgeTone` data.
 - Tag chips.
 - Title, description clamped to 3 lines.
 - Footer action row: violet Live Demo button (external icon), neutral GitHub button.

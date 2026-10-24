@@ -12,17 +12,31 @@ import { projects } from "../data/projects.json";
   </h2>
   <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
     {
-      projects.map(({ id, image, title, description, tags, demo, github }) => (
-        <ProjectCard
-          id={id}
-          image={image}
-          title={title}
-          description={description}
-          demo={demo}
-          github={github}
-          tags={tags}
-        />
-      ))
+      projects.map(
+        ({
+          id,
+          image,
+          title,
+          description,
+          tags,
+          demo,
+          github,
+          badge,
+          badgeTone,
+        }) => (
+          <ProjectCard
+            id={id}
+            image={image}
+            title={title}
+            description={description}
+            demo={demo}
+            github={github}
+            tags={tags}
+            badge={badge}
+            badgeTone={badgeTone as "accent" | "sky" | "teal"}
+          />
+        ),
+      )
     }
   </div>
 </section>
