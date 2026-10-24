@@ -1,2 +1,4 @@
 [build.environment]
   NODE_VERSION = "24"
+  # Public contact email appears intentionally in the downloadable CV.
+  SECRETS_SCAN_OMIT_KEYS = "RECIPIENT_EMAIL_ADDRESS"
