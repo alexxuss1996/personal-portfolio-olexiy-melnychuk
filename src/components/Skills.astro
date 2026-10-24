@@ -1,46 +1,40 @@
 ---
 import SkillCard from "@components/SkillCard.astro";
 import { skills } from "../data/skills.json";
-import Circle from "@components/Circle.astro";
 ---
 
 <section
   id="skills"
-  class="py-24 relative bg-bittersweet dark:bg-indigo overflow-hidden"
+  class="relative overflow-hidden border-y border-line bg-panel py-24"
 >
-  <div class="container max-w-desktop relative z-30">
-    <h2 class="text-2xl font-bold mb-12 dark:text-white uppercase text-center">
-      Skills
-    </h2>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+  <div
+    class="pointer-events-none absolute -right-32 top-1/4 h-96 w-96 rounded-full bg-accent/10 blur-[130px]"
+  >
+  </div>
+  <div
+    class="relative z-10 mx-auto w-full max-w-page px-4 sm:px-6 lg:px-8"
+  >
+    <div class="mx-auto mb-16 max-w-2xl text-center">
+      <h2 class="font-display text-4xl font-semibold tracking-tight">
+        Technical Stack &amp; Mastery
+      </h2>
+      <p class="mt-3 text-sm leading-6 text-muted">
+        Specialized in creating robust front-end web apps with clean separation
+        of concerns and maintainable codebases.
+      </p>
+    </div>
+    <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
       {
-        skills?.map(({ id, title, icon, description }) => (
+        skills.map(({ id, title, icon, description }, index) => (
           <SkillCard
-            key={id}
+            id={id}
             icon={icon}
             title={title}
             description={description}
+            tone={["accent", "sky", "teal"][index % 3] as "accent" | "sky" | "teal"}
           />
         ))
       }
     </div>
   </div>
-  <Circle
-    diameter={252}
-    className="absolute top-0 translate-y-[450px] -translate-x-1/2 right-0 z-10"
-    color="#F5F5F5"
-    opacity={0.09}
-  />
-  <Circle
-    diameter={42}
-    className="absolute top-0 translate-y-[200px] translate-x-[120px] left-0 z-10"
-    color="#FC8936"
-    opacity={0.1}
-  />
-  <Circle
-    diameter={72}
-    className="absolute bottom-0 -translate-y-[250px] translate-x-[150px] left-0 z-10"
-    color="#FC8936"
-    opacity={0.1}
-  />
 </section>

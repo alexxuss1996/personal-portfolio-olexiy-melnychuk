@@ -6,15 +6,30 @@ export interface SkillCardProps {
   title: string;
   icon: string;
   description: string;
+  tone?: "accent" | "sky" | "teal";
 }
 
-const { title, description, icon } = Astro.props as SkillCardProps;
+const { title, description, icon, tone = "accent" } =
+  Astro.props as SkillCardProps;
+
+const tones = {
+  accent: "text-accent bg-accent/10",
+  sky: "text-sky-400 bg-sky-400/10",
+  teal: "text-teal-300 bg-teal-300/10",
+};
 ---
 
-<div
-  class="bg-white dark:bg-black dark:text-white items-center flex flex-col px-8 py-7 rounded"
+<article
+  class="group rounded-card bg-panel p-8 ring-1 ring-line transition duration-300 hover:-translate-y-1 hover:bg-panel-raised hover:shadow-xl"
 >
-  <Icon name={icon} width={64} height={64} class="dark:fill-white" />
-  <h3 class="text-lg mt-8 mb-4 font-bold text-center">{title}</h3>
-  <p class="text-center font-normal text-lg">{description}</p>
-</div>
+  <div
+    class:list={[
+      "mb-6 flex h-14 w-14 items-center justify-center rounded-xl transition-transform group-hover:scale-110",
+      tones[tone],
+    ]}
+  >
+    <Icon name={icon} width={28} height={28} />
+  </div>
+  <h3 class="mb-3 font-display text-2xl font-semibold">{title}</h3>
+  <p class="text-sm leading-relaxed text-muted">{description}</p>
+</article>
