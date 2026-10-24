@@ -49,8 +49,11 @@ Dark:
 
 Shared:
 
-- accent `#8B5CF6`, hover `#7C3AED`
-- accent glow `rgba(139, 92, 246, 0.35)`
+- accent text light `#6D28D9`, dark `#A78BFA`
+- accent fill `#7C3AED`, hover light `#5B21B6`, hover dark `#6D28D9`
+- muted light `#4B5563`, dark `#9E95A6`
+- field border light `#8B8F98`, dark `rgba(247, 235, 225, 0.42)`
+- accent glow `rgba(124, 58, 237, 0.35)`
 - radius: inputs 8px, cards 16px, hero/contact panel 24px, pills 9999px
 - container max width 1280px
 

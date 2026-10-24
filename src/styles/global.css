@@ -7,12 +7,14 @@
   --panel: #ffffff;
   --panel-raised: #f1f0f7;
   --ink: #111827;
-  --muted: #6b7280;
+  --muted: #4b5563;
   --line: rgb(17 24 39 / 0.1);
+  --field-line: #8b8f98;
   --glass: rgb(255 255 255 / 0.72);
-  --accent: #8b5cf6;
-  --accent-hover: #7c3aed;
-  --accent-glow: rgb(139 92 246 / 0.35);
+  --accent: #6d28d9;
+  --accent-fill: #7c3aed;
+  --accent-hover: #5b21b6;
+  --accent-glow: rgb(124 58 237 / 0.35);
 }
 
 .dark {
@@ -22,7 +24,12 @@
   --ink: #f7ebe1;
   --muted: #9e95a6;
   --line: rgb(247 235 225 / 0.1);
+  --field-line: rgb(247 235 225 / 0.42);
   --glass: rgb(23 18 28 / 0.65);
+  --accent: #a78bfa;
+  --accent-fill: #7c3aed;
+  --accent-hover: #6d28d9;
+  --accent-glow: rgb(124 58 237 / 0.35);
 }
 
 @theme inline {
@@ -32,8 +39,10 @@
   --color-ink: var(--ink);
   --color-muted: var(--muted);
   --color-line: var(--line);
+  --color-field-line: var(--field-line);
   --color-glass: var(--glass);
   --color-accent: var(--accent);
+  --color-accent-fill: var(--accent-fill);
   --color-accent-hover: var(--accent-hover);
   --font-display: var(--font-space-grotesk), ui-sans-serif, sans-serif;
   --font-body: var(--font-inter), ui-sans-serif, sans-serif;
@@ -64,7 +73,7 @@
   }
 
   ::selection {
-    background: var(--accent);
+    background: var(--accent-fill);
     color: #fff;
   }
 
