@@ -2,6 +2,7 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+/* Theme tokens */
 :root {
   --canvas: #f7f7fb;
   --panel: #ffffff;
@@ -15,6 +16,9 @@
   --accent-fill: #7c3aed;
   --accent-hover: #5b21b6;
   --accent-glow: rgb(124 58 237 / 0.35);
+  --stardust-a: rgb(109 40 217 / 0.4);
+  --stardust-b: rgb(124 58 237 / 0.26);
+  --stardust-c: rgb(45 27 105 / 0.45);
 }
 
 .dark {
@@ -30,6 +34,9 @@
   --accent-fill: #7c3aed;
   --accent-hover: #6d28d9;
   --accent-glow: rgb(124 58 237 / 0.35);
+  --stardust-a: rgb(221 214 254 / 0.8);
+  --stardust-b: rgb(167 139 250 / 0.55);
+  --stardust-c: rgb(247 235 225 / 0.85);
 }
 
 @theme inline {
@@ -52,6 +59,7 @@
   --container-page: 80rem;
 }
 
+/* Base styles */
 @layer base {
   html {
     scroll-behavior: smooth;
@@ -110,6 +118,7 @@
   }
 }
 
+/* Pointer effects */
 .cursor-glow {
   position: fixed;
   top: 0;
@@ -208,6 +217,7 @@
   }
 }
 
+/* Hero entrance and typewriter */
 @media (prefers-reduced-motion: no-preference) {
   .hero-fade {
     animation: fade-up 700ms cubic-bezier(0.22, 0.61, 0.36, 1) both;
@@ -249,5 +259,94 @@
   to {
     opacity: 1;
     transform: none;
+  }
+}
+
+/* Stardust backdrop: three tiled star layers drift diagonally at different
+   speeds. Each span moves exactly one tile per cycle, so the loop is seamless. */
+.stardust {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  mask-image: linear-gradient(
+    to bottom,
+    transparent,
+    #000 12%,
+    #000 88%,
+    transparent
+  );
+}
+
+.stardust span {
+  position: absolute;
+  inset: -480px;
+  background-repeat: repeat;
+  animation: stardust-drift var(--duration) linear infinite;
+  will-change: transform;
+}
+
+.stardust span:nth-child(1) {
+  --tile: 260px;
+  --duration: 240s;
+  opacity: 0.55;
+  background-size: var(--tile) var(--tile);
+  background-image:
+    radial-gradient(0.9px 0.9px at 22px 38px, var(--stardust-a), transparent),
+    radial-gradient(1.1px 1.1px at 118px 74px, var(--stardust-b), transparent),
+    radial-gradient(0.7px 0.7px at 196px 31px, var(--stardust-a), transparent),
+    radial-gradient(1px 1px at 64px 168px, var(--stardust-c), transparent),
+    radial-gradient(0.8px 0.8px at 233px 207px, var(--stardust-b), transparent),
+    radial-gradient(0.7px 0.7px at 151px 239px, var(--stardust-a), transparent);
+}
+
+.stardust span:nth-child(2) {
+  --tile: 340px;
+  --duration: 170s;
+  opacity: 0.7;
+  background-size: var(--tile) var(--tile);
+  background-image:
+    radial-gradient(1.2px 1.2px at 44px 92px, var(--stardust-b), transparent),
+    radial-gradient(0.8px 0.8px at 167px 27px, var(--stardust-a), transparent),
+    radial-gradient(1px 1px at 289px 141px, var(--stardust-c), transparent),
+    radial-gradient(0.7px 0.7px at 96px 251px, var(--stardust-b), transparent),
+    radial-gradient(1.1px 1.1px at 228px 306px, var(--stardust-a), transparent);
+}
+
+.stardust span:nth-child(3) {
+  --tile: 460px;
+  --duration: 120s;
+  opacity: 0.85;
+  background-size: var(--tile) var(--tile);
+  background-image:
+    radial-gradient(1.4px 1.4px at 61px 148px, var(--stardust-c), transparent),
+    radial-gradient(1px 1px at 249px 52px, var(--stardust-b), transparent),
+    radial-gradient(1.2px 1.2px at 377px 311px, var(--stardust-a), transparent),
+    radial-gradient(0.8px 0.8px at 143px 402px, var(--stardust-b), transparent);
+  animation:
+    stardust-drift var(--duration) linear infinite,
+    stardust-twinkle 9s ease-in-out infinite alternate;
+}
+
+@keyframes stardust-drift {
+  to {
+    transform: translate3d(calc(var(--tile) * -1), calc(var(--tile) * -1), 0);
+  }
+}
+
+@keyframes stardust-twinkle {
+  from {
+    opacity: 0.85;
+  }
+
+  to {
+    opacity: 0.45;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stardust span {
+    animation: none !important;
   }
 }

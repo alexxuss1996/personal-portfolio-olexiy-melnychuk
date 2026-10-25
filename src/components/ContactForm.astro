@@ -2,88 +2,63 @@
 import { Resend } from "resend";
 import { Icon } from "astro-icon/components";
 import { getSecret } from "astro:env/server";
+import {
+  buildContactEmail,
+  createEmptyContactValues,
+  readContactValues,
+  validateContact,
+  type ContactField,
+  type ContactFieldErrors,
+} from "../lib/contact";
 
 const resend = new Resend(getSecret("RESEND_API_KEY"));
 
-const escapeHtml = (value: string) =>
-  value.replace(
-    /[&<>"']/g,
-    (char) =>
-      ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[char]!,
-  );
-
-type Field = "name" | "surname" | "phone" | "email" | "message";
-
-const values: Record<Field, string> = { name: "", surname: "", phone: "", email: "", message: "" };
-const errors: Partial<Record<Field | "form", string>> = {};
-let sent = false;
+const formValues = createEmptyContactValues();
+let fieldErrors: ContactFieldErrors = {};
+let formError = "";
+let wasSent = false;
 
 if (Astro.request.method === "POST") {
   try {
-    const data = await Astro.request.formData();
-    for (const field of Object.keys(values) as Field[]) {
-      values[field] = String(data.get(field) ?? "").trim();
-    }
+    const submitted = readContactValues(await Astro.request.formData());
+    Object.assign(formValues, submitted);
+    fieldErrors = validateContact(formValues);
 
-    if (!values.name) errors.name = "First name is required.";
-    else if (values.name.length < 2) errors.name = "Use at least 2 characters.";
-    else if (values.name.length > 60) errors.name = "Use at most 60 characters.";
-
-    if (values.surname.length > 60) errors.surname = "Use at most 60 characters.";
-
-    if (!values.email && !values.phone) errors.form = "Enter an email or a phone number.";
-    if (values.phone) {
-      if (
-        !/^[+()\d\s-]{7,20}$/.test(values.phone) ||
-        (values.phone.match(/\d/g) ?? []).length < 7
-      ) {
-        errors.phone = "Enter a valid phone number.";
-      }
-    }
-
-    if (values.email && (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.email) || values.email.length > 254)) {
-      errors.email = "Enter a valid email address.";
-    }
-
-    if (!values.message) errors.message = "Message is required.";
-    else if (values.message.length < 10) errors.message = "Use at least 10 characters.";
-    else if (values.message.length > 2000) errors.message = "Use at most 2000 characters.";
-
-    if (Object.keys(errors).length === 0) {
+    if (Object.keys(fieldErrors).length === 0) {
+      const email = buildContactEmail(formValues);
       const { error } = await resend.emails.send({
         to: [getSecret("RECIPIENT_EMAIL_ADDRESS") as string],
         from: getSecret("RESEND_FROM_EMAIL") || "onboarding@resend.dev",
-        ...(values.email ? { replyTo: values.email } : {}),
-        subject: `Message from ${values.name} ${values.surname}`.trim(),
-        text: values.message,
-        html: `<strong>Name: </strong>${escapeHtml(values.name)}<br><strong>Surname: </strong>${escapeHtml(values.surname)}<br><strong>Phone: </strong>${escapeHtml(values.phone)}<br><strong>Email: </strong>${escapeHtml(values.email)}<br><strong>Message: </strong>${escapeHtml(values.message)}`,
+        replyTo: formValues.email,
+        ...email,
       });
 
       if (error) {
         console.error(error);
-        errors.form = "Message could not be sent. Please try again.";
+        formError = "Message could not be sent. Please try again.";
       } else {
-        sent = true;
-        for (const field of Object.keys(values) as Field[]) values[field] = "";
+        wasSent = true;
+        Object.assign(formValues, createEmptyContactValues());
       }
-      console.log(sent ? "Message sent" : "Message failed");
+
+      console.log(wasSent ? "Message sent" : "Message failed");
     }
   } catch (error) {
     console.error(error);
-    errors.form = "Message could not be sent. Please try again.";
+    formError = "Message could not be sent. Please try again.";
   }
 }
 
-const fieldClass = (field: Field) =>
+const fieldClass = (field: ContactField) =>
   `rounded-lg border bg-panel px-4 py-3 font-body text-sm text-ink placeholder:text-muted focus:outline-none focus:ring-2 ${
-    errors[field]
+    fieldErrors[field]
       ? "border-red-600 focus:ring-red-500 dark:border-red-400"
       : "border-field-line focus:ring-accent-fill"
   }`;
 ---
 
 <form method="post" action="/#contact" class="space-y-4" data-contact-form>
-  {sent && (
+  {wasSent && (
     <p
       role="status"
       class="rounded-lg border border-accent/40 bg-accent/10 px-4 py-3 font-body text-sm text-ink"
@@ -91,19 +66,22 @@ const fieldClass = (field: Field) =>
       Thanks, your message was sent. I'll get back to you soon.
     </p>
   )}
-  {errors.form && (
+  {formError && (
     <p
       role="alert"
       class="rounded-lg border border-red-600/50 bg-red-600/10 px-4 py-3 font-body text-sm text-red-700 dark:border-red-400/50 dark:text-red-400"
     >
-      {errors.form}
+      {formError}
     </p>
   )}
 
   <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
     <label class="flex flex-col gap-1.5 font-display text-[11px] uppercase tracking-wider text-muted">
       <span>
-        First Name <span aria-hidden="true" class="text-red-600 dark:text-red-400">*</span>
+        First Name{" "}
+        <span aria-hidden="true" class="text-red-600 dark:text-red-400">
+          *
+        </span>
       </span>
       <input
         name="name"
@@ -113,12 +91,19 @@ const fieldClass = (field: Field) =>
         maxlength="60"
         autocomplete="given-name"
         placeholder="e.g. John"
-        value={values.name}
-        aria-invalid={errors.name ? "true" : undefined}
-        aria-describedby={errors.name ? "error-name" : undefined}
+        value={formValues.name}
+        aria-invalid={fieldErrors.name ? "true" : undefined}
+        aria-describedby={fieldErrors.name ? "error-name" : undefined}
         class={fieldClass("name")}
       />
-      {errors.name && <span id="error-name" class="normal-case text-red-700 dark:text-red-400">{errors.name}</span>}
+      {fieldErrors.name && (
+        <span
+          id="error-name"
+          class="normal-case text-red-700 dark:text-red-400"
+        >
+          {fieldErrors.name}
+        </span>
+      )}
     </label>
     <label class="flex flex-col gap-1.5 font-display text-[11px] uppercase tracking-wider text-muted">
       Last Name
@@ -128,35 +113,49 @@ const fieldClass = (field: Field) =>
         maxlength="60"
         autocomplete="family-name"
         placeholder="e.g. Doe"
-        value={values.surname}
-        aria-invalid={errors.surname ? "true" : undefined}
-        aria-describedby={errors.surname ? "error-surname" : undefined}
+        value={formValues.surname}
+        aria-invalid={fieldErrors.surname ? "true" : undefined}
+        aria-describedby={fieldErrors.surname ? "error-surname" : undefined}
         class={fieldClass("surname")}
       />
-      {errors.surname && (
-        <span id="error-surname" class="normal-case text-red-700 dark:text-red-400">{errors.surname}</span>
+      {fieldErrors.surname && (
+        <span
+          id="error-surname"
+          class="normal-case text-red-700 dark:text-red-400"
+        >
+          {fieldErrors.surname}
+        </span>
       )}
     </label>
   </div>
 
-  <p class="font-body text-xs font-medium text-red-700 dark:text-red-400">Email or phone — at least one is required.</p>
-
   <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
     <label class="flex flex-col gap-1.5 font-display text-[11px] uppercase tracking-wider text-muted">
-      Email Address
+      <span>
+        Email Address{" "}
+        <span aria-hidden="true" class="text-red-600 dark:text-red-400">
+          *
+        </span>
+      </span>
       <input
         name="email"
         type="email"
+        required
         maxlength="254"
         autocomplete="email"
         placeholder="name@company.com"
-        value={values.email}
-        aria-invalid={errors.email ? "true" : undefined}
-        aria-describedby={errors.email ? "error-email" : undefined}
+        value={formValues.email}
+        aria-invalid={fieldErrors.email ? "true" : undefined}
+        aria-describedby={fieldErrors.email ? "error-email" : undefined}
         class={fieldClass("email")}
       />
-      {errors.email && (
-        <span id="error-email" class="normal-case text-red-700 dark:text-red-400">{errors.email}</span>
+      {fieldErrors.email && (
+        <span
+          id="error-email"
+          class="normal-case text-red-700 dark:text-red-400"
+        >
+          {fieldErrors.email}
+        </span>
       )}
     </label>
     <label class="flex flex-col gap-1.5 font-display text-[11px] uppercase tracking-wider text-muted">
@@ -169,20 +168,28 @@ const fieldClass = (field: Field) =>
         pattern="[+()0-9\s-]{7,20}"
         autocomplete="tel"
         placeholder="+380..."
-        value={values.phone}
-        aria-invalid={errors.phone ? "true" : undefined}
-        aria-describedby={errors.phone ? "error-phone" : undefined}
+        value={formValues.phone}
+        aria-invalid={fieldErrors.phone ? "true" : undefined}
+        aria-describedby={fieldErrors.phone ? "error-phone" : undefined}
         class={fieldClass("phone")}
       />
-      {errors.phone && (
-        <span id="error-phone" class="normal-case text-red-700 dark:text-red-400">{errors.phone}</span>
+      {fieldErrors.phone && (
+        <span
+          id="error-phone"
+          class="normal-case text-red-700 dark:text-red-400"
+        >
+          {fieldErrors.phone}
+        </span>
       )}
     </label>
   </div>
 
   <label class="flex flex-col gap-1.5 font-display text-[11px] uppercase tracking-wider text-muted">
     <span>
-      Message <span aria-hidden="true" class="text-red-600 dark:text-red-400">*</span>
+      Message{" "}
+      <span aria-hidden="true" class="text-red-600 dark:text-red-400">
+        *
+      </span>
     </span>
     <textarea
       name="message"
@@ -191,12 +198,17 @@ const fieldClass = (field: Field) =>
       minlength="10"
       maxlength="2000"
       placeholder="Describe your project, timeline, or inquiry..."
-      aria-invalid={errors.message ? "true" : undefined}
-      aria-describedby={errors.message ? "error-message" : undefined}
+      aria-invalid={fieldErrors.message ? "true" : undefined}
+      aria-describedby={fieldErrors.message ? "error-message" : undefined}
       class={`resize-none ${fieldClass("message")}`}
-    >{values.message}</textarea>
-    {errors.message && (
-      <span id="error-message" class="normal-case text-red-700 dark:text-red-400">{errors.message}</span>
+    >{formValues.message}</textarea>
+    {fieldErrors.message && (
+      <span
+        id="error-message"
+        class="normal-case text-red-700 dark:text-red-400"
+      >
+        {fieldErrors.message}
+      </span>
     )}
   </label>
 
@@ -213,16 +225,17 @@ const fieldClass = (field: Field) =>
   const form = document.querySelector<HTMLFormElement>("[data-contact-form]");
 
   if (form) {
-    const button = form.querySelector<HTMLButtonElement>('button[type="submit"]')!;
+    const button = form.querySelector<HTMLButtonElement>(
+      'button[type="submit"]',
+    )!;
     const name = form.elements.namedItem("name") as HTMLInputElement;
     const email = form.elements.namedItem("email") as HTMLInputElement;
-    const phone = form.elements.namedItem("phone") as HTMLInputElement;
     const message = form.elements.namedItem("message") as HTMLTextAreaElement;
 
     const isComplete = () =>
       name.value.trim().length >= 2 &&
       message.value.trim().length >= 10 &&
-      Boolean(email.value.trim() || phone.value.trim());
+      Boolean(email.value.trim());
 
     const update = () => {
       button.disabled = !isComplete();

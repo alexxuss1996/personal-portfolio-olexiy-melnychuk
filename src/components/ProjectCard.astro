@@ -12,7 +12,7 @@ export interface ProjectCardProps {
   tags: string[];
   description: string;
   demo: string;
-  github: string;
+  github?: string;
 }
 
 const {
@@ -36,9 +36,7 @@ const images = import.meta.glob<{ default: ImageMetadata }>(
 );
 ---
 
-<article
-  class="group flex flex-col overflow-hidden rounded-card bg-panel ring-1 ring-line transition duration-300 hover:-translate-y-1.5 hover:shadow-[0_12px_36px_rgb(0_0_0/0.25)]"
->
+<article class="group flex flex-col overflow-hidden rounded-card bg-panel ring-1 ring-line transition duration-300 hover:-translate-y-1.5 hover:shadow-[0_12px_36px_rgb(0_0_0/0.25)]">
   <div class="relative aspect-[16/10] overflow-hidden bg-panel-raised">
     <Image
       width={640}
@@ -49,33 +47,26 @@ const images = import.meta.glob<{ default: ImageMetadata }>(
       src={images[image]()}
       class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
     />
-    <div
-      class="absolute inset-0 bg-gradient-to-t from-panel/80 to-transparent opacity-60"
-    >
-    </div>
-    {
-      badgeLabel && (
-        <span
-          class:list={[
-            "absolute right-3 top-3 rounded-full bg-canvas/80 px-2.5 py-1 font-display text-[11px] font-semibold uppercase tracking-wider backdrop-blur-md",
-            badgeTones[badgeTone],
-          ]}
-        >
-          {badgeLabel}
-        </span>
-      )
-    }
+    <div class="absolute inset-0 bg-gradient-to-t from-panel/80 to-transparent opacity-60"></div>
+    {badgeLabel && (
+      <span
+        class:list={[
+          "absolute right-3 top-3 rounded-full bg-canvas/80 px-2.5 py-1 font-display text-[11px] font-semibold uppercase tracking-wider backdrop-blur-md",
+          badgeTones[badgeTone],
+        ]}
+      >
+        {badgeLabel}
+      </span>
+    )}
   </div>
 
   <div class="flex flex-1 flex-col p-5">
     <ul class="mb-3 flex flex-wrap gap-1.5">
-      {
-        tags.map((tag) => (
-          <li class="rounded bg-panel-raised px-2 py-0.5 font-display text-[11px] text-muted">
-            {tag}
-          </li>
-        ))
-      }
+      {tags.map((tag) => (
+        <li class="rounded bg-panel-raised px-2 py-0.5 font-display text-[11px] text-muted">
+          {tag}
+        </li>
+      ))}
     </ul>
     <h3 class="mb-2 break-words font-display text-2xl font-semibold leading-tight">
       {title}
@@ -90,16 +81,19 @@ const images = import.meta.glob<{ default: ImageMetadata }>(
         rel="noopener noreferrer"
         class="flex flex-1 items-center justify-center gap-1.5 rounded-lg border border-accent/30 bg-accent-fill py-2 font-display text-sm font-medium text-white transition hover:bg-accent-hover"
       >
-        Live Demo <Icon name="ph:arrow-square-out-bold" width={16} height={16} />
+        Live Link{" "}
+        <Icon name="ph:arrow-square-out-bold" width={16} height={16} />
       </a>
-      <a
-        href={github}
-        target="_blank"
-        rel="noopener noreferrer"
-        class="flex items-center gap-1 rounded-lg bg-panel-raised px-3 py-2 font-display text-sm text-ink transition hover:bg-line"
-      >
-        <Icon name="ph:code-bold" width={16} height={16} /> GitHub
-      </a>
+      {github && (
+        <a
+          href={github}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="flex items-center gap-1 rounded-lg bg-panel-raised px-3 py-2 font-display text-sm text-ink transition hover:bg-line"
+        >
+          <Icon name="ph:code-bold" width={16} height={16} /> GitHub
+        </a>
+      )}
     </div>
   </div>
 </article>
