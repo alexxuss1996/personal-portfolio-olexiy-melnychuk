@@ -5,11 +5,13 @@
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev --port 3000 --open",
-    "build": "astro check && astro build",
+    "build": "npm run previews && astro check && astro build",
     "preview": "astro preview",
     "astro": "astro",
     "lint:js": "eslint . --fix",
-    "format": "prettier -w ./src ./src/**/*.astro"
+    "format": "prettier -w ./src ./src/**/*.astro",
+    "previews": "tsx scripts/gen-previews.ts",
+    "previews:force": "tsx scripts/gen-previews.ts --force"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.12",
@@ -26,6 +28,7 @@
     "@iconify-json/ph": "^1.2.2",
     "@iconify-json/simple-icons": "^1.2.100",
     "@types/eslint": "^9.6.1",
+    "@types/node": "^26.6.5",
     "@types/prettier": "^3.0.0",
     "@typescript-eslint/parser": "^8.72.0",
     "eslint": "^10.13.0",
@@ -34,6 +37,8 @@
     "postcss-html": "^2.0.0",
     "prettier": "^3.9.10",
     "prettier-plugin-astro": "^1.1.2",
+    "sharp": "^0.35.5",
+    "tsx": "^4.23.15",
     "typescript-eslint": "^8.72.0",
     "webdev-configs": "^1.5.0"
   },

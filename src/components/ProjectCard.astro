@@ -13,6 +13,7 @@ export interface ProjectCardProps {
   description: string;
   demo: string;
   github?: string;
+  previewUrl?: string;
 }
 
 const {
@@ -32,7 +33,7 @@ const badgeTones = {
 };
 const badgeLabel = badge ?? tags[0];
 const images = import.meta.glob<{ default: ImageMetadata }>(
-  "../images/projects/*.{jpeg,jpg,png,gif}",
+  "../images/projects/*.{jpeg,jpg,png,gif,webp}",
 );
 ---
 
